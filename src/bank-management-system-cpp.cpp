@@ -1420,17 +1420,71 @@ void BankSystem(stUser User)
 
 
 
+//-----------LOGIN----------
+void ShowScreenLogin()
+{
 
+	cout << "---------------------------------------\n";
+	cout << "\t\t Login Screen \n";
+	cout << "---------------------------------------\n";
 
+}
+
+stUser ReadNameUserAndPassword()
+{
+	stUser User;
+	cout << "Enter Username? ";
+	getline(cin >> ws, User.Name);
+	cout << "Enter Password? ";
+	cin >> User.Password;
+
+	return User;
+}
+
+bool CheckUserNameAndPasswordRight(stUser& User)
+{
+
+	vector<stUser> vUsers = LoadDataUsersFromFileToStrVector(UserFileName, delim);
+	for (stUser UserIn : vUsers)
+	{
+		if (UserIn.Name == User.Name && UserIn.Password == User.Password)
+		{
+			User = UserIn;
+			return true;
+		}
+	}
+	return false;
+
+}
+
+void Login()
+{
+	int c = 1;
+
+	do {
+		system("cls");
+
+		ShowScreenLogin();
+
+		stUser User = ReadNameUserAndPassword();
+
+		while (!CheckUserNameAndPasswordRight(User))
+		{
+			cout << "InValid Username/Password!\n";
+			User = ReadNameUserAndPassword();
+
+		}
+		BankSystem(User);
+
+	} while (c == 1);
+}
 
 
 
 int main()
 {
-
+	Login();
 
 }
-
-
 
 
