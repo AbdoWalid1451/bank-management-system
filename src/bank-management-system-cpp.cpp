@@ -397,6 +397,97 @@ void DeleteClient()
 
 
 
+//----------------- UPDATE CLIENT DATA --------
+void ReadClientDataUpdate(stClientData& ClientData)
+{
+
+
+	cout << "Enter Pin Code? ";
+	getline(cin >> ws, ClientData.PinCode);
+
+	cout << "Enter Name? ";
+	getline(cin, ClientData.Name);
+
+	cout << "Enter Phone? ";
+	getline(cin, ClientData.Phone);
+
+	cout << "Enter AcountBalance? ";
+	cin >> ClientData.AccountBalance;
+
+
+}
+
+bool AskUpdateAccount()
+{
+	char chouse = 'n';
+
+	cout << "\n Are you sure you want to update account? y/n? ";
+	cin >> chouse;
+
+	return (tolower(chouse) == 'y') ? 1 : 0;
+
+
+}
+
+void UpdateInVectorAndFile(vector<stClientData>& vClients, short pos)
+{
+
+	ReadClientDataUpdate(vClients.at(pos));
+
+	vector<string> vClientsAsLines;
+
+	for (stClientData& Client : vClients)
+		vClientsAsLines.push_back(ConvertRecordToLine(Client, delim));
+
+
+
+	LoadDataFromVectorToFile(ClientFileName, vClientsAsLines);
+}
+
+void Update()
+{
+	vector<stClientData> vClients = LoadDataClintsFromFileToStrVector(ClientFileName, delim);
+
+	short pos = ReadAccountNumberExisted();
+
+	PrintClientRecord(vClients.at(pos));
+
+	if (AskUpdateAccount())
+	{
+		UpdateInVectorAndFile(vClients, pos);
+		cout << "\nClient Updated Successfully. \n";
+
+	}
+	else
+		cout << "The Account Still There\n";
+
+}
+
+void PrintHeaderOfUpdateClientInfo()
+{
+	cout << "---------------------------------------\n";
+	cout << "\t\t Update Client Screen\n";
+	cout << "---------------------------------------\n";
+
+
+}
+
+void UpdateClientInfo()
+{
+	system("cls");
+
+	PrintHeaderOfUpdateClientInfo();
+
+	Update();
+}
+
+
+
+
+
+
+
+
 
 
 int main()
