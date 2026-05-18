@@ -1238,6 +1238,193 @@ void FindUser()
 
 
 
+//***********MANAGEUSER*******************
+enCoiceManageUser ReadChoiceManageUsers()
+{
+	int c = 6;
+
+	cout << "Choose What do you want to do? [1 to 6]? ";
+	cin >> c;
+
+	return (enCoiceManageUser)c;
+}
+
+void ShowMangeUsersMenuScreen()
+{
+	cout << "===============================================================\n";
+	cout << "\t\t Manage Users Main Menu Screen\n";
+	cout << "===============================================================\n";
+	cout << "\t[1] List Users.\n";
+	cout << "\t[2] Add New User.\n";
+	cout << "\t[3] Delete User.\n";
+	cout << "\t[4] Update User.\n";
+	cout << "\t[5] Find User.\n";
+	cout << "\t[6] Main Menu.\n";
+	cout << "===============================================================\n";
+
+}
+
+void ManageUser()
+{
+	enCoiceManageUser  choice;
+
+	do {
+		system("cls");
+
+		ShowMangeUsersMenuScreen();
+
+		choice = ReadChoiceManageUsers();
+
+		switch (choice)
+		{
+		case enCoiceManageUser::listusers:
+			ShowUsersList();
+			break;
+		case enCoiceManageUser::addnewuser:
+			AddNewUsers();
+			break;
+		case enCoiceManageUser::deleteuser:
+			DeleteUsers();
+			break;
+		case enCoiceManageUser::updateuser:
+			UpdateUserInfo();
+			break;
+		case enCoiceManageUser::finduser:
+			FindUser();
+			break;
+		}
+		if (choice != enCoiceManageUser::mainmenue)
+		{
+			cout << "\n\nPlease enter any key to go ";
+			system("pause>0");
+		}
+	} while (choice != enCoiceManageUser::mainmenue);
+
+}
+
+
+//************SYSTEM****************
+void ShowMenuScreen()
+{
+	cout << "===============================================================\n";
+	cout << "\t\t\t\t Main Menu Screen\n";
+	cout << "===============================================================\n";
+	cout << "\t\t[1] Show Client List.\n";
+	cout << "\t\t[2] Add New Client.\n";
+	cout << "\t\t[3] Delete Client.\n";
+	cout << "\t\t[4] Update Client Info.\n";
+	cout << "\t\t[5] Find Client.\n";
+	cout << "\t\t[6] Transactions.\n";
+	cout << "\t\t[7] Manage Users.\n";
+	cout << "\t\t[8] Logout.\n";
+	cout << "===============================================================\n";
+
+}
+
+enChoicesList ReadChoiceUser()
+{
+	int c = 8;
+	cout << "Choose What do you Want to do? [1 to 8]? ";
+	cin >> c;
+	return (enChoicesList)c;
+}
+
+void NotValid()
+{
+	system("cls");
+	cout << "--------------------------------------\n";
+	cout << "Access Denied,\nYou dont have permission to do this,\nplease contact your Admin.\n";
+	cout << "--------------------------------------\n";
+}
+
+void BankSystem(stUser User)
+{
+	enChoicesList Choice;
+
+
+	do {
+
+		system("cls");
+
+		ShowMenuScreen();
+
+		Choice = ReadChoiceUser();
+
+		int Acessess = User.Access;
+
+		switch (Choice)
+		{
+		case enChoicesList::showclientlist:
+			if ((Acessess & 1) == 1 || User.Access == -1)
+				ShowClientList();
+
+			else
+				NotValid();
+			break;
+
+		case enChoicesList::addnewclients:
+			if ((Acessess & 2) == 2 || User.Access == -1)
+				AddNewClients();
+
+			else
+				NotValid();
+			break;
+
+		case enChoicesList::deleteclient:
+			if ((Acessess & 4) == 4 || User.Access == -1)
+				DeleteClient();
+
+			else
+				NotValid();
+			break;
+
+		case enChoicesList::updateclientinfo:
+			if ((Acessess & 8) == 8 || User.Access == -1)
+				UpdateClientInfo();
+
+			else
+				NotValid();
+			break;
+		case enChoicesList::findclient:
+			if ((Acessess & 16) == 16 || User.Access == -1)
+				FindClint();
+
+			else
+				NotValid();
+			break;
+		case enChoicesList::transactions:
+			if ((Acessess & 32) == 32 || User.Access == -1)
+				TransAction();
+
+			else
+				NotValid();
+			break;
+		case enChoicesList::manageusers:
+			if ((Acessess & 64) == 64 || User.Access == -1)
+				ManageUser();
+
+			else
+				NotValid();
+			break;
+
+		}
+
+
+		cout << "\n\nPlease enter any key to go ";
+		if (Choice != enChoicesList::logout)
+			system("pause>0");
+
+	} while (Choice != enChoicesList::logout);
+
+}
+
+
+
+
+
+
+
+
 int main()
 {
 
