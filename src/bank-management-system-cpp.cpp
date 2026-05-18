@@ -515,6 +515,259 @@ void FindClint()
 
 
 
+//---------------------TRANSACTION LIST-----------------
+
+
+enum enChoiceTransactoins
+{
+	deposit = 1, withdraw = 2,
+	totalbalances = 3, mainMenu = 4
+};
+
+//BALANCES LIST
+void PrintClientBalanceAsLine(stClientData Client)
+{
+	cout << "| " << left << setw(15) << Client.AccountNumber;
+
+	cout << "| " << left << setw(40) << Client.Name;
+
+	cout << "| " << left << setw(12) << Client.AccountBalance;
+	cout << endl;
+
+}
+
+void PrintHeadOfBalanceList()
+{
+	cout << "----------------------------------------------------------------------------------------------------\n";
+
+	cout << "| " << left << setw(15) << "Acount Number";
+	cout << "| " << left << setw(40) << "Client Name";
+	cout << "| " << left << setw(12) << "Balance\n";
+
+	cout << "------------------------------------------------------------------------------------------------------\n\n";
+
+}
+
+void ShowBalanceClientsList()
+{
+	system("cls");
+	vector<stClientData> vClients = LoadDataClintsFromFileToStrVector(ClientFileName, delim);
+
+	cout << "\t\t\t\t\t Clients List (" << vClients.size() << ") Client(s).\n";
+
+	PrintHeadOfBalanceList();
+
+	for (stClientData Client : vClients)
+		PrintClientBalanceAsLine(Client);
+
+}
+
+
+
+//WITHDRAW
+bool AskWithdrawClient()
+{
+	char chouse = 'n';
+
+	cout << "\n Are you sure you want to Deposit amount? y/n? ";
+	cin >> chouse;
+
+	return (tolower(chouse) == 'y') ? 1 : 0;
+
+
+}
+
+bool IsamountAllow(double& amount, double original)
+{
+	while (amount >= original)
+	{
+		cout << "Amount Exceed the balance , you can withdraw up to : " << original << endl;
+		cout << "Please enter another amount? ";
+		cin >> amount;
+	}
+
+	return true;
+}
+
+void WithdrawClient()
+{
+	double amount = 0;
+
+	vector<stClientData> vClients = LoadDataClintsFromFileToStrVector(ClientFileName, delim);
+
+	vector<string> vClientsAsLines;
+
+	short pos = ReadAccountNumberExisted();
+
+	PrintClientRecord(vClients.at(pos));
+
+	cout << "\nPlease enter Withdraw amount? ";
+	cin >> amount;
+
+	if (IsamountAllow(amount, vClients.at(pos).AccountBalance) && AskWithdrawClient())
+	{
+		vClients.at(pos).AccountBalance -= amount;
+
+
+		cout << "Done Successfully New Balance = " << vClients.at(pos).AccountBalance;
+
+		for (stClientData& Client : vClients)
+			vClientsAsLines.push_back(ConvertRecordToLine(Client, delim));
+
+
+
+		LoadDataFromVectorToFile(ClientFileName, vClientsAsLines);
+	}
+
+	else
+		cout << "Acount Still =" << vClients.at(pos).AccountBalance;
+}
+
+void PrintHeaderOfWithdraw()
+{
+	cout << "---------------------------------------\n";
+	cout << "\t\t WITHDRAW Screen\n";
+	cout << "---------------------------------------\n";
+
+}
+
+void Withdraw()
+{
+	system("cls");
+
+	PrintHeaderOfWithdraw();
+
+	WithdrawClient();
+}
+
+
+
+
+//DEPOSIT.
+bool AskDepositClient()
+{
+	char chouse = 'n';
+
+	cout << "\n Are you sure you want to Deposit amount? y/n? ";
+	cin >> chouse;
+
+	return (tolower(chouse) == 'y') ? 1 : 0;
+
+
+}
+
+void DepositClient()
+{
+	double amount = 0;
+
+	vector<stClientData> vClients = LoadDataClintsFromFileToStrVector(ClientFileName, delim);
+
+	vector<string> vClientsAsLines;
+
+	short pos = ReadAccountNumberExisted();
+
+	PrintClientRecord(vClients.at(pos));
+
+	cout << "\nPlease enter deposit amount? ";
+	cin >> amount;
+
+	if (AskDepositClient())
+	{
+		vClients.at(pos).AccountBalance += amount;
+
+
+		cout << "Done Successfully New Balance = " << vClients.at(pos).AccountBalance;
+
+		for (stClientData& Client : vClients)
+			vClientsAsLines.push_back(ConvertRecordToLine(Client, delim));
+
+
+
+		LoadDataFromVectorToFile(ClientFileName, vClientsAsLines);
+	}
+
+	else
+		cout << "Acount Still =" << vClients.at(pos).AccountBalance;
+}
+
+void PrintHeaderOfDeposit()
+{
+	cout << "---------------------------------------\n";
+	cout << "\t\t Deposit Screen\n";
+	cout << "---------------------------------------\n";
+
+}
+
+void Deposit()
+{
+	system("cls");
+
+	PrintHeaderOfDeposit();
+
+	DepositClient();
+}
+
+
+
+//TRANSACTION
+enChoiceTransactoins ReadChoiceTransaction()
+{
+	int c = 4;
+
+	cout << "Choose What do you want to do? [1 to 4]? ";
+	cin >> c;
+
+	return (enChoiceTransactoins)c;
+}
+
+void ShowTransactionMenuScreen()
+{
+	cout << "===============================================================\n";
+	cout << "\t\t\t\t Transactions Menu Screen\n";
+	cout << "===============================================================\n";
+	cout << "\t\t[1] Deposit.\n";
+	cout << "\t\t[2] Withdraw.\n";
+	cout << "\t\t[3] Total Balances.\n";
+	cout << "\t\t[4] Main Menu.\n";
+	cout << "===============================================================\n";
+}
+
+void TransAction()
+{
+	enChoiceTransactoins  choice;
+
+	do {
+		system("cls");
+
+		ShowTransactionMenuScreen();
+
+		choice = ReadChoiceTransaction();
+
+		switch (choice)
+		{
+		case enChoiceTransactoins::deposit:
+			Deposit();
+			break;
+		case enChoiceTransactoins::withdraw:
+			Withdraw();
+			break;
+		case enChoiceTransactoins::totalbalances:
+			ShowBalanceClientsList();
+			break;
+		case enChoiceTransactoins::mainMenu:
+			cout << "\n\nOkay!";
+			return;
+		}
+
+		cout << "\n\nPlease enter any key to go ";
+		system("pause>0");
+
+	} while (choice != enChoiceTransactoins::mainMenu);
+}
+
+
+
+
 
 
 
