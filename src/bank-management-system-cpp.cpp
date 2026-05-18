@@ -483,6 +483,34 @@ void UpdateClientInfo()
 
 
 
+//----------------- FIND CLIENT --------
+void ShowClintInfo()
+{
+
+	vector<stClientData> vClients = LoadDataClintsFromFileToStrVector(ClientFileName, delim);
+
+	short pos = ReadAccountNumberExisted();
+
+	PrintClientRecord(vClients.at(pos));
+}
+
+void PrintHeaderOfFindClient()
+{
+	cout << "---------------------------------------\n";
+	cout << "\t\t Find Client Screen\n";
+	cout << "---------------------------------------\n";
+
+
+}
+
+void FindClint()
+{
+	system("cls");
+
+	PrintHeaderOfFindClient();
+
+	ShowClintInfo();
+}
 
 
 
