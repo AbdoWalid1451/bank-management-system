@@ -996,6 +996,70 @@ void ShowUsersList()
 
 
 
+//---------ADDING USERS-----------
+stUser ReadUsertData()
+{
+	stUser UserData;
+
+	UserData.Name = ReadNewUser();
+
+	cout << "Enter Password? ";
+	cin >> UserData.Password;
+
+
+	UserData.Access = ReadPermisiion();
+
+	return UserData;
+}
+
+void AddNewUser()
+{
+	stUser UserData;
+
+	UserData = ReadUsertData();
+
+	SendLintToFile(UserFileName, ConvertRecordToLineForUser(UserData, delim));
+
+
+}
+
+void AddUsers()
+{
+
+	char more = 'n';
+
+	do
+	{
+
+		AddNewUser();
+
+		cout << "User Added Successfuly, do you want add more Users?(Y||N)? ";
+		cin >> more;
+
+	} while (more == 'y' || more == 'Y');
+
+}
+
+void PrintHeadOfAddUsers()
+{
+	cout << "---------------------------------------\n";
+	cout << "\tAdd New Users Screen\n";
+	cout << "---------------------------------------\n";
+	cout << "Adding New User\n";
+
+
+}
+
+void AddNewUsers()
+{
+	system("cls");
+
+	PrintHeadOfAddUsers();
+
+	AddUsers();
+}
+
+
 
 
 
