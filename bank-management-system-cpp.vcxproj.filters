@@ -25,4 +25,12 @@
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\ClintsData.txt">
+      <Filter>data</Filter>
+    </Text>
+    <Text Include="data\UsersData.txt">
+      <Filter>data</Filter>
+    </Text>
+  </ItemGroup>
 </Project>
