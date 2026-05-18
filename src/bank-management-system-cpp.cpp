@@ -9,7 +9,7 @@
 using namespace std;
 
 
-const string ClientFileName = "ClintsData.txt";
+const string ClientFileName = "data/ClintsData.txt";
 
 const string delim = "#//#";
 
@@ -200,6 +200,48 @@ void PrintClientRecord(stClientData Client)
 
 }
 
+
+
+
+//----------------SHOW CLIENT LIST
+void PrintClientRecordAsLine(stClientData Client)
+{
+	cout << "| " << left << setw(15) << Client.AccountNumber;
+	cout << "| " << left << setw(10) << Client.PinCode;
+	cout << "| " << left << setw(40) << Client.Name;
+	cout << "| " << left << setw(12) << Client.Phone;
+	cout << "| " << left << setw(12) << Client.AccountBalance;
+	cout << endl;
+
+}
+
+void PrintHeadOfClientList()
+{
+	cout << "----------------------------------------------------------------------------------------------------\n";
+
+	cout << "| " << left << setw(15) << "Acount Number";
+	cout << "| " << left << setw(10) << "Pin Code";
+	cout << "| " << left << setw(40) << "Client Name";
+	cout << "| " << left << setw(12) << "Phone";
+	cout << "| " << left << setw(12) << "Balance\n";
+
+	cout << "------------------------------------------------------------------------------------------------------\n\n";
+
+}
+
+void ShowClientList()
+{
+	system("cls");
+	vector<stClientData> vClients = LoadDataClintsFromFileToStrVector(ClientFileName, delim);
+
+	cout << "\t\t\t\t\t Clients List (" << vClients.size() << ") Client(s).\n";
+
+	PrintHeadOfClientList();
+
+	for (stClientData Client : vClients)
+		PrintClientRecordAsLine(Client);
+
+}
 
 
 
