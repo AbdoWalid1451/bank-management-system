@@ -245,6 +245,92 @@ void ShowClientList()
 
 
 
+//------------------ADD CLIENTS
+stClientData ReadClientData()
+{
+	stClientData ClientData;
+
+	ClientData.AccountNumber = ReadNewAccountNumber();
+
+
+	cout << "Enter Pin Code? ";
+	getline(cin >> ws, ClientData.PinCode);
+
+	cout << "Enter Name? ";
+	getline(cin, ClientData.Name);
+
+	cout << "Enter Phone? ";
+	getline(cin, ClientData.Phone);
+
+	cout << "Enter AcountBalance? ";
+	cin >> ClientData.AccountBalance;
+
+	return ClientData;
+}
+
+void SendLintToFile(string FileName, string DataClientline)
+{
+	fstream MyFile;
+
+	MyFile.open(FileName, ios::out | ios::app);
+
+	if (MyFile.is_open())
+	{
+		MyFile << DataClientline << endl;
+
+		MyFile.close();
+	}
+
+}
+
+void AddNewClient()
+{
+	stClientData ClientData;
+
+	ClientData = ReadClientData();
+
+	SendLintToFile(ClientFileName, ConvertRecordToLine(ClientData, delim));
+
+
+}
+
+void AddClients()
+{
+
+	char more = 'n';
+
+	do
+	{
+
+		AddNewClient();
+
+		cout << "Client Added Successfuly, do you want add more clients?(Y||N)? ";
+		cin >> more;
+
+	} while (more == 'y' || more == 'Y');
+
+}
+
+void PrintHeadOfAddClients()
+{
+	cout << "---------------------------------------\n";
+	cout << "\tAdd New Clients Screen\n";
+	cout << "---------------------------------------\n";
+	cout << "Adding New Client\n";
+
+
+}
+
+void AddNewClients()
+{
+	system("cls");
+
+	PrintHeadOfAddClients();
+
+	AddClients();
+}
+
+
 
 
 
