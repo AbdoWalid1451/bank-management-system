@@ -956,6 +956,45 @@ int ReadPermisiion()
 
 
 
+//---------USERS LIST-------------
+void PrintUserAsLine(stUser User)
+{
+	cout << "| " << left << setw(15) << User.Name;
+
+	cout << "| " << left << setw(15) << User.Password;
+
+	cout << "| " << left << setw(15) << User.Access;
+	cout << endl;
+
+}
+
+void PrintHeadOfUsersList()
+{
+	cout << "----------------------------------------------------------------------------------------------------\n";
+
+	cout << "| " << left << setw(15) << "Name";
+	cout << "| " << left << setw(15) << "Password ";
+	cout << "| " << left << setw(15) << "Access\n";
+
+	cout << "------------------------------------------------------------------------------------------------------\n\n";
+
+}
+
+void ShowUsersList()
+{
+	system("cls");
+	vector<stUser> vUsers = LoadDataUsersFromFileToStrVector(UserFileName, delim);
+
+	cout << "\t\t\t\t\t Users List (" << vUsers.size() << ") User(s).\n";
+
+	PrintHeadOfUsersList();
+
+	for (stUser User : vUsers)
+		PrintUserAsLine(User);
+
+}
+
+
 
 
 
