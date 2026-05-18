@@ -1129,6 +1129,83 @@ void DeleteUsers()
 
 
 
+//-----------------UPDATE User DATA-------
+void ReadUserDataUpdate(stUser& UserData)
+{
+	cout << "Enter Password? ";
+	cin >> UserData.Password;
+
+
+	UserData.Access = ReadPermisiion();
+
+}
+
+bool AskUpdateUser()
+{
+	char chouse = 'n';
+
+	cout << "\n Are you sure you want to update User? y/n? ";
+	cin >> chouse;
+
+	return (tolower(chouse) == 'y') ? 1 : 0;
+
+
+}
+
+void UpdateInVectorAndFile(vector<stUser>& vUsers, short pos)
+{
+
+	ReadUserDataUpdate(vUsers.at(pos));
+
+	vector<string> vUsersAsLines;
+
+	for (stUser& User : vUsers)
+		vUsersAsLines.push_back(ConvertRecordToLineForUser(User, delim));
+
+
+
+	LoadDataFromVectorToFile(UserFileName, vUsersAsLines);
+}
+
+void UpdateUser()
+{
+	vector<stUser> vUsers = LoadDataUsersFromFileToStrVector(UserFileName, delim);
+
+	size_t pos = ReadNameUserExisted();
+
+	PrintUserRecord(vUsers.at(pos));
+
+	if (AskUpdateUser())
+	{
+		UpdateInVectorAndFile(vUsers, pos);
+		cout << "\n User Updated Successfully. \n";
+
+	}
+	else
+		cout << "The User Still There\n";
+
+}
+
+void PrintHeaderOfUpdateUserInfo()
+{
+	cout << "---------------------------------------\n";
+	cout << "\t\t Update User Screen\n";
+	cout << "---------------------------------------\n";
+
+
+}
+
+void UpdateUserInfo()
+{
+	system("cls");
+
+	PrintHeaderOfUpdateUserInfo();
+
+	UpdateUser();
+}
+
+
+
 
 
 int main()
