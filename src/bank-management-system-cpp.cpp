@@ -1205,6 +1205,36 @@ void UpdateUserInfo()
 }
 
 
+//-----------------FIND User---------
+void ShowUserInfo()
+{
+
+	vector<stUser> vUsers = LoadDataUsersFromFileToStrVector(UserFileName, delim);
+
+	short pos = ReadNameUserExisted();
+
+	PrintUserRecord(vUsers.at(pos));
+}
+
+void PrintHeaderOfFindUser()
+{
+	cout << "---------------------------------------\n";
+	cout << "\t\t Find User Screen\n";
+	cout << "---------------------------------------\n";
+
+
+}
+
+void FindUser()
+{
+	system("cls");
+
+	PrintHeaderOfFindUser();
+
+	ShowUserInfo();
+}
+
+
 
 
 
