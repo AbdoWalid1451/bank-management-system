@@ -768,6 +768,195 @@ void TransAction()
 
 
 
+// ********************MANAGE USERS*************
+
+enum enCoiceManageUser
+{
+	listusers = 1, addnewuser = 2,
+	deleteuser = 3, updateuser = 4,
+	finduser = 5, mainmenue = 6
+};
+
+struct stUser
+{
+	string Name = "";
+	int Password = 0;
+	int Access = 0;
+};
+
+
+string UserFileName = "data/UsersData.txt";
+
+
+//---------- helper functions --------
+stUser ConvertLineToRecordForUser(string line, string delim)
+{
+	vector<string> vData = SplitString(line, delim);
+
+	stUser UserData;
+	UserData.Name = vData[0];
+	UserData.Password = stoi(vData[1]);
+	UserData.Access = stoi(vData[2]);
+
+
+	return UserData;
+}
+
+vector<stUser>  LoadDataUsersFromFileToStrVector(string filename, string delim)
+{
+	vector<stUser> vUsers;
+	fstream myfile;
+
+	myfile.open(filename, ios::in);
+
+	if (myfile.is_open())
+	{
+		string line;
+		while (getline(myfile, line))
+		{
+			vUsers.push_back(ConvertLineToRecordForUser(line, delim));
+
+		}
+
+		myfile.close();
+	}
+	return vUsers;
+}
+
+string ConvertRecordToLineForUser(stUser UserData, string delim)
+{
+	string str = "";
+	str = UserData.Name + delim
+		+ to_string(UserData.Password) + delim
+		+ to_string(UserData.Access);
+
+	return str;
+}
+
+short FindUseUseName(vector<stUser> vUsers, string Name)
+{
+	short pos = 0;
+
+	for (stUser& User : vUsers)
+	{
+		if (User.Name == Name)
+			return pos;
+
+		pos++;
+	}
+
+	return -1;
+}
+
+string ReadNewUser()
+{
+	string Name;
+
+	cout << "\nPlease enter Username? ";
+	getline(cin >> ws, Name);
+
+	short pos = FindUseUseName(LoadDataUsersFromFileToStrVector(UserFileName, delim), Name);
+	while (pos != -1)
+	{
+		cout << "User With [" << Name << "] already exit\n";
+
+		cout << "\nPlease enter New UserName? ";
+		getline(cin >> ws, Name);
+
+		pos = FindUseUseName(LoadDataUsersFromFileToStrVector(UserFileName, delim), Name);
+
+	}
+
+
+	return Name;
+}
+
+short ReadNameUserExisted()
+{
+	string Name;
+
+	cout << "\nPlease enter User Name ? ";
+	getline(cin >> ws, Name);
+
+	short pos = FindUseUseName(LoadDataUsersFromFileToStrVector(UserFileName, delim), Name);
+	while (pos == -1)
+	{
+		cout << "User With [" << Name << "] does not Found\n";
+
+		cout << "\nPlease enter User Name? ";
+		getline(cin >> ws, Name);
+
+		pos = FindUseUseName(LoadDataUsersFromFileToStrVector(UserFileName, delim), Name);
+
+	}
+
+
+	return pos;
+}
+
+void PrintUserRecord(stUser User)
+{
+	cout << "\nName User : " << User.Name << endl;
+	cout << "Password     : " << User.Password << endl;
+	cout << "Permisiion     : " << User.Access << endl;
+
+}
+
+int ReadPermisiion()
+{
+	int access = 0;
+	char agree = 'n';
+
+	cout << "Do you want to give full access?y/n? ";
+	cin >> agree;
+
+	if (tolower(agree) == 'y')
+		return -1;
+
+	cout << "Do you want to give access to: \n";
+
+	cout << "\n Show Clint list? y/n? ";
+	cin >> agree;
+	if (tolower(agree) == 'y')
+		access += 1;
+
+	cout << "\n Add New Clint ? y/n? ";
+	cin >> agree;
+	if (tolower(agree) == 'y')
+		access += 2;
+
+	cout << "\n Delete Clint ? y/n? ";
+	cin >> agree;
+	if (tolower(agree) == 'y')
+		access += 4;
+
+	cout << "\n Update Clint ? y/n? ";
+	cin >> agree;
+	if (tolower(agree) == 'y')
+		access += 8;
+
+	cout << "\n Find Clint?  y/n? ";
+	cin >> agree;
+	if (tolower(agree) == 'y')
+		access += 16;
+
+	cout << "\n Transactions? y/n? ";
+	cin >> agree;
+	if (tolower(agree) == 'y')
+		access += 32;
+
+	cout << "\n Manage User ? y/n? ";
+	cin >> agree;
+	if (tolower(agree) == 'y')
+		access += 64;
+
+
+	return access;
+}
+
+
+
+
 
 
 
