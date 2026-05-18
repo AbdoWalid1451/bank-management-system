@@ -1060,6 +1060,74 @@ void AddNewUsers()
 }
 
 
+//----------------DELETE Users--------
+bool AskDeleteUser()
+{
+	char chouse = 'n';
+
+	cout << "\n Are you sure you want to delete user? y/n? ";
+	cin >> chouse;
+
+	return (tolower(chouse) == 'y') ? 1 : 0;
+
+
+}
+
+void DeleteFromVectorAndFile(vector<stUser> vUsers, short pos)
+{
+	vector<string> vUsersAsLines;
+
+	for (stUser& User : vUsers)
+		vUsersAsLines.push_back(ConvertRecordToLineForUser(User, delim));
+
+	vUsersAsLines.at(pos) = "";
+
+	LoadDataFromVectorToFile(UserFileName, vUsersAsLines);
+}
+
+void DeleteUser()
+{
+
+	size_t pos = ReadNameUserExisted();
+	if (pos == 0)
+		cout << "This the Admin , We cant delete him\n";
+
+
+	else
+	{
+		vector<stUser> vUsers = LoadDataUsersFromFileToStrVector(UserFileName, delim);
+
+		PrintUserRecord(vUsers.at(pos));
+
+		if (AskDeleteUser())
+		{
+			DeleteFromVectorAndFile(vUsers, pos);
+			cout << "\n User Deleted Successfully. \n";
+
+		}
+		else
+			cout << "The User Still There\n";
+	}
+}
+
+void PrintHeaderOfDeleteUser()
+{
+	cout << "---------------------------------------\n";
+	cout << "\t\t Delete User Screen\n";
+	cout << "---------------------------------------\n";
+
+}
+
+void DeleteUsers()
+{
+	system("cls");
+
+	PrintHeaderOfDeleteUser();
+
+	DeleteUser();
+}
+
+
 
 
 
