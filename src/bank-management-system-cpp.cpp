@@ -203,7 +203,7 @@ void PrintClientRecord(stClientData Client)
 
 
 
-//----------------SHOW CLIENT LIST
+//---------------- SHOW CLIENT LIST ---------
 void PrintClientRecordAsLine(stClientData Client)
 {
 	cout << "| " << left << setw(15) << Client.AccountNumber;
@@ -245,7 +245,7 @@ void ShowClientList()
 
 
 
-//------------------ADD CLIENTS
+//------------------ ADD CLIENTS --------------
 stClientData ReadClientData()
 {
 	stClientData ClientData;
@@ -328,6 +328,71 @@ void AddNewClients()
 	PrintHeadOfAddClients();
 
 	AddClients();
+}
+
+
+
+
+//---------------- DELETE CLIENTS -----------
+bool AskDeleteAccount()
+{
+	char chouse = 'n';
+
+	cout << "\n Are you sure you want to delete account? y/n? ";
+	cin >> chouse;
+
+	return (tolower(chouse) == 'y') ? 1 : 0;
+
+
+}
+
+void DeleteFromVectorAndFile(vector<stClientData> vClients, short pos)
+{
+	vector<string> vClientsAsLines;
+
+	for (stClientData& Client : vClients)
+		vClientsAsLines.push_back(ConvertRecordToLine(Client, delim));
+
+	vClientsAsLines.at(pos) = "";
+
+	LoadDataFromVectorToFile(ClientFileName, vClientsAsLines);
+}
+
+void Delete()
+{
+
+	short pos = ReadAccountNumberExisted();
+
+	vector<stClientData> vClients = LoadDataClintsFromFileToStrVector(ClientFileName, delim);
+
+	PrintClientRecord(vClients.at(pos));
+
+	if (AskDeleteAccount())
+	{
+		DeleteFromVectorAndFile(vClients, pos);
+		cout << "\nClient Deleted Successfully. \n";
+
+	}
+	else
+		cout << "The Account Still There\n";
+
+}
+
+void PrintHeaderOfDeleteClint()
+{
+	cout << "---------------------------------------\n";
+	cout << "\t\t Delete Client Screen\n";
+	cout << "---------------------------------------\n";
+
+}
+
+void DeleteClient()
+{
+	system("cls");
+
+	PrintHeaderOfDeleteClint();
+
+	Delete();
 }
 
 
